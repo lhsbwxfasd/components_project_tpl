@@ -4,6 +4,7 @@
 const path = require('path')
 module.exports = {
     mode: "production",
+    //mode: "development",
     externals: [
         { "$": true },
         { "jQuery": true }
@@ -15,6 +16,7 @@ module.exports = {
         libraryTarget: "umd",
         umdNamedDefine: true
     },
+    //devtool: "source-map",
     module: {
         rules: [{
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

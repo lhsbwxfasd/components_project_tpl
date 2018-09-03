@@ -5,6 +5,8 @@ let fs = require('fs')
 let path = require('path')
 let gulp = require('gulp')
 let connect = require('gulp-connect');
+//let webserver = require('gulp-webserver');
+let clean = require('gulp-clean')
 let shelljs = require('shelljs')
 let Orchestrator = require('orchestrator')
 let orchestrator = new Orchestrator()
@@ -36,20 +38,34 @@ let tools = {
 }
 let config = {
     task: {
+        clean(path) {
+            return gulp.src(path)
+                .pipe(clean())
+        },
+        /*
+        webserver(path) {
+            return gulp.src(path)
+                .pipe(webserver({
+                    livereload: true,
+                    open: "http://localhost:3080/demo/",
+                    port:3080
+                }))
+        },
+        */
         server(projectPath) {
             return connect.server({
                 livereload: true,
                 root: projectPath,
-                port:3080
+                port: 3080
             });
         },
-        reloadPage(page){
+        reloadPage(page) {
             return gulp.src(page)
                 .pipe(connect.reload())
         },
-        complieJs(files, outDist){
+        complieJs(files, outDist) {
             files = files ? files : ['./scripts/*.js']
-            return gulp.src( files )
+            return gulp.src(files)
                 .pipe(babel())
                 .pipe(webpack(webpackConfig))
                 .pipe(gulp.dest(outDist))
@@ -60,12 +76,12 @@ let config = {
 
         execSinglePage(name) {
             let self = this
-            orchestrator.add(name, ()=>{
+            orchestrator.add(name, () => {
                 //run project
                 console.log("run page: " + name);
                 self.execCommand(name)
             })
-            orchestrator.start(name, ()=>{
+            orchestrator.start(name, () => {
                 console.log("--- run end ---")
             })
         },
@@ -83,19 +99,17 @@ let config = {
         },
         processTpl(tplpath, name) {
             return fs.readFileSync(tplpath, {
-                encoding: 'utf-8'
-            })
-            .replace(/\{\{dName\}\}/g, tools.camelCased(name)) //camel cased used for function name
-            .replace(/\{\{Name\}\}/g, tools.pascalCased(name)) //pascal cased for directive literal partial
-            .replace(/\{\{name\}\}/g, name) //- separated use for html page and test markup
+                    encoding: 'utf-8'
+                })
+                .replace(/\{\{dName\}\}/g, tools.camelCased(name)) //camel cased used for function name
+                .replace(/\{\{Name\}\}/g, tools.pascalCased(name)) //pascal cased for directive literal partial
+                .replace(/\{\{name\}\}/g, name) //- separated use for html page and test markup
         },
         getFolders(dir) {
-            return fs.readdirSync(dir).filter((file)=> {
+            return fs.readdirSync(dir).filter((file) => {
                 return fs.statSync(path.join(dir, file)).isDirectory()
             });
         }
     }
 }
 module.exports = config;
-
-
