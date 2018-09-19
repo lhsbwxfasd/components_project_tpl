@@ -2,33 +2,45 @@
     @auther 李华 2018
 */
 const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
     mode: "production",
-    //mode: "development",
-    externals: [
-        { "$": true },
-        { "jQuery": true }
-    ],
+    entry: "",
     output: {
-        filename: '[name].min.js',
-        chunkFilename: '[name].chunk.js',
-        publicPath: "./dist",
+        path: "",
+        filename: "[name].min.js",
         libraryTarget: "umd",
         umdNamedDefine: true
     },
-    //devtool: "source-map",
+    externals: [
+        { "vue": "Vue" },
+        { "vuex": "Vuex" },
+        { "vue-router": "VueRouter" },
+
+        { "accounting-js": "accountingJs" },
+        { "axios": "axios" },
+        { "element-ui": "ElementUI" },
+        { "handsontable": "handsontable" },
+        { "heatmap.js": "heatmap" },
+        { "highcharts": "highcharts" },
+        { "highcharts-more-node": true },
+        { "jquery": "jQuery" },
+        { "lodash": "_" },
+        { "lodash.throttle": true }
+    ],
+    resolve: {
+        //modules: ["node_modules",],
+        extensions: [".js", ".json", "jsx" , ".scss", ".css", ".vue"]
+        //alias: {}
+    },
+    plugins: [
+        new VueLoaderPlugin()
+    ],
+    devtool: "source-map",
     module: {
         rules: [{
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000
-                    }
-                }]
-            },
-            {
-                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                exclude: /node_modules/,
                 use: [{
                     loader: 'url-loader',
                     options: {
@@ -38,6 +50,7 @@ module.exports = {
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                exclude: /node_modules/,
                 use: [{
                     loader: 'url-loader',
                     options: {
@@ -46,9 +59,11 @@ module.exports = {
                 }]
             }, {
                 test: /\.txt$/,
+                exclude: /node_modules/,
                 use: "raw-loader"
             }, {
                 test: /\.html$/,
+                exclude: /node_modules/,
                 use: [{
                     loader: "html-loader",
                     options: {
@@ -58,17 +73,27 @@ module.exports = {
                         removeOptionalTags: false
                     }
                 }]
-                
+
             },
             {
                 test: /\.css$/,
-                exclude: /node_modules/, 
+                exclude: /node_modules/,
                 use: ["style-loader", "css-loader"]
             },
             {
                 test: /\.scss$/,
-                exclude: /node_modules/, 
+                exclude: /node_modules/,
                 use: ["style-loader", "css-loader", "sass-loader"]
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: ["babel-loader"]
+            },
+            {
+                test: /\.vue$/,
+                exclude: /node_modules/,
+                use: ["vue-loader"]
             }
         ]
     }

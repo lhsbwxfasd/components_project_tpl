@@ -1,7 +1,60 @@
-let {{Name}} = function(){
-	//to do
+
+/*
+// 一： UMD 组件模式写法
+let $ = require("jquery") 
+let ##Name## = function(){
 }
-{{Name}}.prototype = {
-	
+##Name##.prototype = {
 }
-module.exports = {{Name}}
+window.xxx##Name## = ##Name##        //声名组件全局名称到window下，使组件那被<script> 标签方式引入使用
+module.exports = ##Name##            //输出组件，使组件能被require("xxx-##name##")方式引入 或 import xxx##Name## from "xxx-##name##" 方式引入
+*/
+
+/*
+// 二： ES6 import/export 组件模式写法
+import $ from "jquery"
+let ##Name## = function(){
+}
+##Name##.prototype = {
+}
+window.xxx##Name## = ##Name##        //声名组件全局名称到window下，使组件那被<script> 标签方式引入使用
+export default ##Name##              //输出组件，使组件能被require("xx-##name##")方式引入 或 import xxx##Name## from "xxx-##name##" 方式引入
+*/
+
+
+/*
+// 三： Vue 组件模板样式分离模式写法
+import indexHTML from "./template/index.html"
+import "./scss/index.scss"
+const ##name## = {
+    install: function(Vue) {
+        Vue.component("xxx-##name##", {
+            data: function() {
+                return {}
+            },
+            props: {},
+            template: indexHTML,
+            mounted: function() {},
+            watch: {},
+            computed:{},
+            methods:{}
+        })
+    }
+}
+window.xxx##Name## = ##name##
+export default ##name##
+*/
+
+
+// 四： .Vue文件模式写法
+import ##Name## from "./template/index.vue"
+const ##name## = {
+    install: function(Vue) {
+        Vue.component("xxx-##name##", ##Name##)
+    }
+}
+window.xxx##Name## = ##name##
+export default ##name##
+
+
+
