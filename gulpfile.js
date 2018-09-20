@@ -4,7 +4,6 @@
 let gulp = require('gulp')
 let minimist = require('minimist')
 let config = require('./gulp.config.js')
-let shelljs = require('shelljs')
 let envirionment = minimist(process.argv.slice(2))
 
 let projectName = envirionment.n
@@ -30,8 +29,8 @@ gulp.task('complieJs', () => {
 })
 
 gulp.task('watcher', () => {
-    gulp.watch([projectJs, projectScss, projectHtml, projectVue], ["complieJs", "reloadPage"])
-    gulp.watch([projectPath + "/demo/index.html", projectPath + "/demo/demo.js"], ["complieDemoJS", "reloadPage"])
+    gulp.watch([projectJs, projectScss, projectHtml, projectVue], ["complieJs"])
+    gulp.watch([projectPath + "/demo/index.html", projectPath + "/demo/demo.js"], ["complieDemoJS"])
 })
 gulp.task("build", () => {
     if (projectName !== "charts") {
@@ -64,28 +63,9 @@ gulp.task("installComNpm", () => {
 gulp.task('server', ["build", "injectDemoHTML", "complieDemoJS"],  () => {
     return tasks.server(projectPath)
 })
-gulp.task('reloadPage', () => {
-    return tasks.reloadPage(projectPath + "/demo/index.html")
-})
+
 gulp.task("openBrowser", ["server"], () => {
-    var platform = process.platform
-    var shellStr1 = "open -a '/Applications/Google Chrome.app' 'http://localhost:3080/demo'"
-    var shellStr2 = "start http://localhost:3080/demo"
-    // 打开浏览器方法：
-    var openFunc = function(str, flag) {
-        // 执行并对异常处理
-        if (shelljs.exec(str).code !== 0) {
-            shelljs.echo(flag + '下打开浏览器失败,建议您安装chrome并设为默认浏览器!')
-            shelljs.exit(1);
-        }
-    };
-    if (platform === 'darwin') {
-        openFunc(shellStr1, 'Mac')
-    } else if (platform === 'win32' || platform === 'win64') {
-        openFunc(shellStr2, 'Windows')
-    } else {
-        shelljs.echo('现在只支持Mac和windows系统!如果未打开页面，请确认安装chrome并设为默认浏览器!')
-    }
+    tasks.openBrowser()
 })
 
 gulp.task("publish", ["incVersion"], () => {

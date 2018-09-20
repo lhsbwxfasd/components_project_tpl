@@ -48,17 +48,40 @@ let config = {
                 .pipe(clean())
         },
         server(projectPath) {
+            this.hasBeenServer = true;
             return connect.server({
                 livereload: true,
                 root: projectPath,
                 port: 3080
             });
         },
+        openBrowser() {
+            var platform = process.platform
+            var shellStr1 = "open -a '/Applications/Google Chrome.app' 'http://localhost:3080/demo'"
+            var shellStr2 = "start http://localhost:3080/demo"
+            // 打开浏览器方法：
+            var openFunc = function(str, flag) {
+                // 执行并对异常处理
+                if (shelljs.exec(str).code !== 0) {
+                    shelljs.echo(flag + '下打开浏览器失败,建议您安装chrome并设为默认浏览器!')
+                    shelljs.exit(1);
+                }
+            };
+            if (platform === 'darwin') {
+                openFunc(shellStr1, 'Mac')
+            } else if (platform === 'win32' || platform === 'win64') {
+                openFunc(shellStr2, 'Windows')
+            } else {
+                shelljs.echo('现在只支持Mac和windows系统!如果未打开页面，请确认安装chrome并设为默认浏览器!')
+            }
+            this.hasOpenBrowser = true;
+        },
         reloadPage(page) {
             return gulp.src(page)
                 .pipe(connect.reload())
         },
         complieJs(projectName, projectPath) {
+            let self = this;
             let entryJson = require(projectPath + "/entry.json")
             let entry = entryJson.entry
             let output = entryJson.output
@@ -85,7 +108,15 @@ let config = {
                 }
             })
             return webpack(cf, (err, status)=>{
-                console.log("complie src end =====")
+                if(status.compilation.errors.length > 0) {
+                    console.log("-------------------- Error --------------------")
+                    console.log(status.compilation.errors)
+                }
+                console.log("===== complie src end =====")
+                if(self.hasBeenServer && self.hasOpenBrowser) {
+                    console.log("===== reload page =====")
+                    self.reloadPage(projectPath + "/demo/index.html")
+                }
             })
         },
         execCommand(name) {
