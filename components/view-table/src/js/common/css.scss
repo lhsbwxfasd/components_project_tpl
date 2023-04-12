@@ -1,0 +1,74 @@
+.cm-scroll {
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    border: none;
+}
+
+.cm-scroll-view {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    border: none;
+}
+
+.cm-scroll-body {
+    position: absolute;
+}
+
+
+/*scroll bar*/
+.cm-scrollbar {
+    position: absolute;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.cm-scrollbar-v {
+    right: 0px;
+    top: 0px;
+}
+
+.cm-scrollbar-h {
+    left: 0px;
+    bottom: 0px;
+}
+
+.cm-scrollbar-track {
+    position: relative;
+    overflow: hidden;
+    background: #202020;
+    width: 100%;
+    height: 100%;
+}
+
+.cm-scrollbar-thumb {
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background: #545454;
+    border-radius: 1px;
+}
+
+.cm-scrollbar-thumb:hover {
+    background: #888888;
+}
+
+.cm-scrollbar-thumb-hold {
+    background: #666666;
+}
+
+.cm-scrollbar-thumb-hold:hover {
+    background: #666666;
+}
+

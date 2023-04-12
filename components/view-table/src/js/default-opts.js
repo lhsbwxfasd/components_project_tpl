@@ -1,0 +1,42 @@
+export default {
+    isExportPdf: false,
+    maxHeight: null,
+    cssName: "vt-view-table",
+    theme: "",
+    lineHeight: 34,
+    pageNum: null,
+    header: true,
+    enCollapseTotal: true,
+    collapseTotal: false,
+    enCheckbox: true,
+    enCheckboxTotal: true,
+    sectAll: null,
+    multiSect: true,
+    enRowNumber: true,
+    rowNumberType: "leaf",
+    rowsInfo: {},
+    sortId: "",
+    sortAsc: true,
+    sortFast: false,
+    sortComparers: null,
+    blankToBottom: true,
+    colDefaults: {
+        minWidth: 60,
+        maxWidth: 600,
+        name: ""
+    },
+    autoEdit: true,
+    fixedCol: -1,
+    fixedRightCol: null,
+    fixedRow: -1,
+    fixedBottom: false,
+    fixedColMax: 10,
+    fixedRowMax: 10,
+    supportStyles: ["background", "border", "color", "fontSize", "fontWeight"],
+    scrollbarSize: 10,
+    scrollMinWidth: 30,
+    noDataText: "暂无数据!",
+    rowFilter(rowItem) {
+        return true;
+    }
+}
